@@ -1,1 +1,116 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>facio — Roblox Developer</title>
+<style>
+:root{--bg:#0d0d0d;--fg:#f0f0f0;--mut:#9a9a9a;--card:#171717;--line:#2a2a2a;--pill:#2f2f2f;--acc:#e9e9e9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0d0d}}
+:root[data-theme="dark"]{--bg:#0d0d0d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;overflow-x:hidden;min-height:100vh}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1100px;margin:0 auto;padding:14px 20px;background:linear-gradient(var(--bg) 70%,transparent)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;letter-spacing:-.02em}
+.logo svg{width:34px;height:34px}
+.links,.lang{display:flex;gap:4px}
+nav button{font:inherit;font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;border:0;background:transparent;color:var(--fg);padding:9px 13px;border-radius:9px;cursor:pointer}
+nav button.on{background:var(--pill)}
+.bgwrap{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.tile{position:absolute;width:34vw;min-width:220px;aspect-ratio:16/10;border-radius:26px;transform:rotate(-8deg);filter:blur(5px);opacity:.55;background:#666 repeating-conic-gradient(#707070 0 25%,#5c5c5c 0 50%) 0 0/36px 36px;background-size:cover;background-position:center}
+.tile.img{background-size:cover}
+.wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 20px 80px}
+.page{display:none}.page.on{display:block}
+.hero{padding-top:clamp(70px,16vh,170px)}
+h1{font-size:clamp(2.3rem,7.5vw,4.6rem);line-height:1.04;margin:0 0 22px;letter-spacing:-.035em;font-weight:800}
+.lead{font-size:clamp(1rem,2.4vw,1.35rem);font-weight:600;max-width:640px;line-height:1.4;margin:0 0 30px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:46px}
+.btn{font:inherit;font-weight:700;font-size:15px;padding:13px 24px;border-radius:999px;border:2px solid var(--fg);background:transparent;color:var(--fg);cursor:pointer}
+.btn.pri{background:var(--fg);color:#111;border-color:var(--fg)}
+.stats{display:flex;gap:32px;flex-wrap:wrap}
+.stats b{display:block;font-size:26px}.stats span{font-size:12px;color:var(--mut);text-transform:uppercase;font-weight:700;letter-spacing:.03em}
+h2{font-size:clamp(1.8rem,5vw,2.6rem);letter-spacing:-.03em;margin:40px 0 8px}
+.sub{color:var(--mut);margin:0 0 24px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+.chip.on{background:var(--fg);color:#111}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative}
+.item img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;cursor:zoom-in;background:#222}
+.cap{padding:12px 15px}.cap b{display:block}.cap small{color:var(--mut)}.cap p{margin:6px 0 0;font-size:14px;color:var(--mut)}
+.cap a{color:var(--fg);font-weight:700;font-size:14px;display:inline-block;margin-top:8px}
+.del{position:absolute;top:8px;right:8px;font:inherit;font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;border:0;background:rgba(0,0,0,.75);color:#fff;cursor:pointer}
+.empty{color:var(--mut);padding:50px 0;grid-column:1/-1;text-align:center}
+.admin{display:none;background:var(--card);border:1px dashed #666;border-radius:18px;padding:16px;margin-bottom:22px;gap:10px;flex-wrap:wrap;align-items:center}
+.admin.on{display:flex}
+.admin input[type=text]{font:inherit;font-size:14px;flex:1 1 150px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0d0d0d;color:var(--fg)}
+.msg{width:100%;font-size:13px;color:var(--mut)}
+.contact{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:520px;line-height:1.6}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+#lb img{max-width:100%;max-height:100%;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="bgwrap" id="bg"></div>
+<nav>
+<div class="logo"><svg viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="19" ry="17" fill="#f0f0f0"/><text x="20" y="28" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="26" fill="#0d0d0d">f</text></svg><span>facio</span></div>
+<div class="links" id="links"></div>
+<div class="lang"><button data-l="pl">PL</button><button data-l="en">ENG</button></div>
+</nav>
+<div class="wrap">
+<section class="page on" id="p-home"><div class="hero">
+<h1 data-t="h1"></h1>
+<p class="lead" data-t="lead"></p>
+<div class="cta"><button class="btn pri" data-go="portfolio" data-t="b1"></button><button class="btn" data-go="games" data-t="b2"></button></div>
+<div class="stats"><div><b id="s1">0</b><span data-t="s1"></span></div><div><b id="s2">0</b><span data-t="s2"></span></div><div><b id="s3">Luau</b><span data-t="s3"></span></div></div>
+</div></section>
+<section class="page" id="p-portfolio"><h2 data-t="n_portfolio"></h2><p class="sub" data-t="sub1"></p>
+<div class="filters" id="f-portfolio"></div><div class="admin" data-kind="portfolio"></div><div class="grid" id="g-portfolio"></div></section>
+<section class="page" id="p-games"><h2 data-t="n_games"></h2><p class="sub" data-t="sub2"></p>
+<div class="admin" data-kind="games"></div><div class="grid" id="g-games"></div></section>
+<section class="page" id="p-contact"><h2 data-t="n_contact"></h2><div class="contact"><p data-t="contact"></p><p><b>Roblox:</b> facio</p></div></section>
+</div>
+<div id="lb"><img alt=""></div>
+<script>
+const T={en:{h1:"Scripting systems.<br>Building worlds.",lead:"facio — Roblox Studio developer. Luau scripting, UI design and complete, polished experiences built from the ground up.",b1:"Explore Portfolio",b2:"Games",s1:"Portfolio works",s2:"Games",s3:"Roblox Studio",n_home:"Home",n_portfolio:"Portfolio",n_games:"Games",n_contact:"Contact",sub1:"Systems, UI, builds and showcases.",sub2:"Experiences I've made.",contact:"Want to work together? Reach out on Roblox — my username is facio.",all:"All",add:"+ Add images",title:"Title",desc:"Description",cat:"Category",link:"Link (optional)",own:"Owner mode — only you can add or remove items.",none:"Nothing here yet.",del:"Delete",open:"Open ↗",ask:"Delete this item?",sending:"Uploading…",ok:"Added ✓"},
+pl:{h1:"Skryptuję systemy.<br>Buduję światy.",lead:"facio — developer Roblox Studio. Skrypty w Luau, projektowanie UI i kompletne, dopracowane doświadczenia od podstaw.",b1:"Zobacz portfolio",b2:"Gry",s1:"Prac w portfolio",s2:"Gier",s3:"Roblox Studio",n_home:"Start",n_portfolio:"Portfolio",n_games:"Gry",n_contact:"Kontakt",sub1:"Systemy, UI, buildy i showcase'y.",sub2:"Doświadczenia, które stworzyłem.",contact:"Chcesz współpracować? Napisz do mnie na Roblox — mój nick to facio.",all:"Wszystkie",add:"+ Dodaj zdjęcia",title:"Tytuł",desc:"Opis",cat:"Kategoria",link:"Link (opcjonalnie)",own:"Tryb właściciela — tylko Ty możesz dodawać i usuwać.",none:"Na razie pusto.",del:"Usuń",open:"Otwórz ↗",ask:"Usunąć ten element?",sending:"Wysyłam…",ok:"Dodano ✓"}};
+let lang='en',page='home',items=[],filter='all',isOwner=false,db=null,assets=null;
+try{lang=localStorage.getItem('lang')||(navigator.language||'').startsWith('pl')?'pl':'en';const s=localStorage.getItem('lang');if(s)lang=s}catch(e){}
+const $=s=>document.querySelector(s),t=k=>T[lang][k]||k;
+function nav(){const l=$('#links');l.innerHTML='';['home','portfolio','games','contact'].forEach(p=>{const b=document.createElement('button');b.textContent=t('n_'+p);if(p===page)b.className='on';b.onclick=()=>go(p);l.appendChild(b)});document.querySelectorAll('.lang button').forEach(b=>b.className=b.dataset.l===lang?'on':'')}
+function go(p){page=p;document.querySelectorAll('.page').forEach(e=>e.classList.toggle('on',e.id==='p-'+p));nav();scrollTo(0,0)}
+function admin(){document.querySelectorAll('.admin').forEach(a=>{a.classList.toggle('on',isOwner&&!!assets&&!!db);if(a.dataset.built===lang||!a.classList.contains('on'))return;a.dataset.built=lang;a.innerHTML='';const k=a.dataset.kind;
+[['title',t('title')],['desc',t('desc')],...(k==='portfolio'?[['cat',t('cat')]]:[['link',t('link')]])].forEach(([n,p])=>{const i=document.createElement('input');i.type='text';i.placeholder=p;i.dataset.n=n;a.appendChild(i)});
+const f=document.createElement('input');f.type='file';f.accept='image/*';f.multiple=true;f.hidden=true;const b=document.createElement('button');b.className='btn pri';b.textContent=t('add');b.onclick=()=>f.click();
+const m=document.createElement('div');m.className='msg';m.textContent=t('own');
+f.onchange=async()=>{const v=n=>(a.querySelector('[data-n='+n+']')||{}).value||'';for(const file of f.files){m.textContent=t('sending');try{const r=await assets.upload(file);await db.collection('works').doc('w'+Date.now()+Math.random().toString(36).slice(2,6)).set({kind:k,assetId:r.id,title:v('title')||file.name.replace(/\.[^.]+$/,''),desc:v('desc'),cat:v('cat'),link:v('link'),created:Date.now()});m.textContent=t('ok')}catch(e){m.textContent='Error: '+(e.message||e.code)}}f.value=''};
+a.append(f,b,m)})}
+function safeUrl(u){try{const x=new URL(u);return x.protocol==='https:'||x.protocol==='http:'?x.href:null}catch(e){return null}}
+function card(w){const d=document.createElement('div');d.className='item';const im=document.createElement('img');im.src='/_blob/'+w.assetId;im.loading='lazy';im.alt=w.title||'';im.onclick=()=>{$('#lb img').src=im.src;$('#lb').style.display='flex'};d.appendChild(im);
+const c=document.createElement('div');c.className='cap';const b=document.createElement('b');b.textContent=w.title||'';c.appendChild(b);
+if(w.cat){const s=document.createElement('small');s.textContent=w.cat;c.appendChild(s)}
+if(w.desc){const p=document.createElement('p');p.textContent=w.desc;c.appendChild(p)}
+const u=w.link&&safeUrl(w.link);if(u){const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.textContent=t('open');c.appendChild(a)}
+d.appendChild(c);
+if(isOwner){const x=document.createElement('button');x.className='del';x.textContent=t('del');x.onclick=async()=>{if(!confirm(t('ask')))return;try{await db.collection('works').doc(w.id).delete();await assets.delete(w.assetId)}catch(e){}};d.appendChild(x)}
+return d}
+function render(){
+const P=items.filter(w=>(w.kind||'portfolio')==='portfolio'),G=items.filter(w=>w.kind==='games');
+$('#s1').textContent=P.length;$('#s2').textContent=G.length;
+const cats=[...new Set(P.map(w=>w.cat).filter(Boolean))];if(filter!=='all'&&!cats.includes(filter))filter='all';
+const f=$('#f-portfolio');f.innerHTML='';['all',...cats].forEach(c=>{const b=document.createElement('button');b.className='chip'+(c===filter?' on':'');b.textContent=c==='all'?t('all'):c;b.onclick=()=>{filter=c;render()};f.appendChild(b)});
+[['portfolio',P.filter(w=>filter==='all'||w.cat===filter)],['games',G]].forEach(([k,list])=>{const g=$('#g-'+k);g.innerHTML='';if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent=t('none');g.appendChild(e)}list.forEach(w=>g.appendChild(card(w)))});
+const bg=$('#bg');bg.innerHTML='';const pos=[[-6,2],[32,-1],[68,3],[-6,62],[32,64],[68,60]];const imgs=items.slice(0,6);
+pos.forEach(([x,y],i)=>{const d=document.createElement('div');d.className='tile';d.style.left=x+'vw';d.style.top=y+'vh';if(imgs[i]){d.classList.add('img');d.style.backgroundImage='url(/_blob/'+imgs[i].assetId+')'}bg.appendChild(d)});
+document.querySelectorAll('[data-t]').forEach(e=>{e.innerHTML=t(e.dataset.t)});
+nav();admin()}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;try{localStorage.setItem('lang',lang)}catch(e){}document.querySelectorAll('.admin').forEach(a=>a.dataset.built='');render()});
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+$('#lb').onclick=()=>$('#lb').style.display='none';
+render();
+(async()=>{try{const u=await claude.use('user');isOwner=u?u.isOwner():false;db=await claude.use('db');assets=await claude.use('assets');
+if(db)db.collection('works').onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.created||0)-(a.created||0));render()},e=>console.error(e));render()}catch(e){console.error(e)}})();
+</script>
+</body>
+</html>
